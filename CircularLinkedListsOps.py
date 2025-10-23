@@ -9,94 +9,93 @@ class CircularLinkedList:
     def __init__(self):
         self.head = None
 
-    # Insert at the end
-    def insert_end(self, data):
-        new_node = Node(data)
-        if self.head is None:
-            self.head = new_node
-            new_node.next = new_node  # Circular link
-            return
-
-        temp = self.head
-        while temp.next != self.head:
-            temp = temp.next
-        temp.next = new_node
-        new_node.next = self.head
-
-    # Insert at the beginning
+    # Insert at front
     def insert_front(self, data):
         new_node = Node(data)
-        if self.head is None:
+        if self.head == None:
             self.head = new_node
             new_node.next = new_node
             return
 
-        temp = self.head
-        while temp.next != self.head:
-            temp = temp.next
+        ptr = self.head
+        while ptr.next != self.head:
+            ptr = ptr.next
 
         new_node.next = self.head
-        temp.next = new_node
+        ptr.next = new_node
         self.head = new_node
 
-    # Delete a node by value
-    def delete_node(self, key):
-        if self.head is None:
-            print("List is empty!")
+    # Insert at end
+    def insert_end(self, data):
+        new_node = Node(data)
+        if self.head == None:
+            self.head = new_node
+            new_node.next = new_node  
             return
 
-        current = self.head
-        prev = None
+        ptr = self.head
+        while ptr.next != self.head:
+            ptr = ptr.next
+        ptr.next = new_node
+        new_node.next = self.head
 
-        # Case 1: Only one node
-        if current.next == self.head and current.data == key:
+    # Delete at front
+    def delete_front(self):
+        if self.head == None:
+            print("List is empty!")
+            return
+        if self.head.next == self.head:
+            print(f"{self.head.data} deleted from the front.")
             self.head = None
             return
+        ptr = self.head
+        while ptr.next != self.head:  
+            ptr = ptr.next
 
-        # Case 2: Deleting head node
-        if current.data == key:
-            while current.next != self.head:
-                current = current.next
-            current.next = self.head.next
-            self.head = self.head.next
-            return
+        print(f"{self.head.data} deleted from the front.")
+        ptr.next = self.head.next  
+        self.head = self.head.next   
 
-        # Case 3: Deleting other nodes
-        prev = self.head
-        current = self.head.next
-        while current != self.head:
-            if current.data == key:
-                prev.next = current.next
-                return
-            prev = current
-            current = current.next
-
-        print("Node not found!")
-
-    # Display the Circular Linked List
-    def display(self):
-        if self.head is None:
+    # Delete at end
+    def delete_end(self):
+        if self.head == None:
             print("List is empty!")
             return
-        temp = self.head
+        if self.head.next == self.head:
+            print(f"{self.head.data} deleted from the end.")
+            self.head = None
+            return
+        ptr = self.head
+        curr = self.head.next
+        while curr.next != self.head:  
+            ptr = curr
+            curr = curr.next
+        print(f"{curr.data} deleted from the end.")
+        ptr.next = self.head  
+
+    # Traverse
+    def Traverse(self):
+        if self.head == None:
+            print("List is empty!")
+            return
+        ptr = self.head
         print("Circular Linked List:", end=" ")
-        while True:
-            print(temp.data, end=" ")
-            temp = temp.next
-            if temp == self.head:
+        while ptr:
+            print(ptr.data, end="-->")
+            ptr = ptr.next
+            if ptr == self.head:
                 break
-        print()
+        print("NULL")
 
-# Example usage
-if __name__ == "__main__":
-    cll = CircularLinkedList()
+# input
+cll = CircularLinkedList()
+cll.insert_end(10)
+cll.insert_end(20)
+cll.insert_end(30)
+cll.insert_front(5)
 
-    cll.insert_end(10)
-    cll.insert_end(20)
-    cll.insert_end(30)
-    cll.insert_front(5)
+cll.Traverse()
 
-    cll.display()
-
-    cll.delete_node(20)
-    cll.display()
+cll.delete_front()
+cll.delete_end()
+cll.Traverse()
